@@ -26,7 +26,7 @@ spec:
       - name: tgi-tpu-server
         securityContext:
             privileged: true
-        image: ghcr.io/huggingface/tpu-tgi:latest
+        image: us-east1-docker.pkg.dev/$PROJECT_ID/gke-llm/optimum-tgi-tpu:latest
         env:
             - name: HUGGING_FACE_HUB_TOKEN
               valueFrom:
