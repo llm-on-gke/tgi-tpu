@@ -107,11 +107,11 @@ ENV HUGGINGFACE_HUB_CACHE=/data \
     PORT=80 \
     VERSION=${VERSION}
 RUN git clone https://github.com/huggingface/optimum-tpu
-COPY optimum-tpu /opt/optimum-tpu
+#COPY optimum-tpu /opt/optimum-tpu
 
 # Install requirements for optimum-tpu, then for TGI then optimum-tpu
 RUN python3 -m pip install hf_transfer safetensors==${SAFETENSORS_VERSION} && \
-    python3 -m pip install -e /opt/optimum-tpu -f https://storage.googleapis.com/libtpu-releases/index.html
+    python3 -m pip install -e optimum-tpu -f https://storage.googleapis.com/libtpu-releases/index.html
 
 # Install router
 COPY --from=builder /usr/src/target/release/text-generation-router /usr/local/bin/text-generation-router
