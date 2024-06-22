@@ -38,7 +38,7 @@ spec:
             - name: shm-size
               value: 1g
             - name: MODEL_ID
-              value: google/gemma-2b
+              value: google/gemma-2b-it
             - name: TGI_MAX_CONCURRENT_REQUESTS 
               value: "4"
             - name: TGI_MAX_INPUT_TOKENS
