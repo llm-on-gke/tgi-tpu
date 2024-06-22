@@ -52,6 +52,7 @@ RUN apt-get update -y \
     python3-pip \
     python3-setuptools \
     python-is-python3 \
+    git \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 RUN pip3 --no-cache-dir install --upgrade pip
@@ -105,8 +106,8 @@ ENV HUGGINGFACE_HUB_CACHE=/data \
     HF_HUB_ENABLE_HF_TRANSFER=1 \
     PORT=80 \
     VERSION=${VERSION}
-
-COPY . /opt/optimum-tpu
+RUN git clone https://github.com/huggingface/optimum-tpu
+COPY optimum-tpu /opt/optimum-tpu
 
 # Install requirements for optimum-tpu, then for TGI then optimum-tpu
 RUN python3 -m pip install hf_transfer safetensors==${SAFETENSORS_VERSION} && \
