@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tgi-gpu-deployment
+spec:
+  selector:
+    matchLabels:
+      app: tgi-tpu-server
+  replicas: 1  # number of nodes in node-pool
+  template:
+    metadata:
+      labels:
+        app: tgi-tpu-server
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      nodeSelector:
+        cloud.google.com/gke-tpu-topology: 1x1 #  target topology
+        cloud.google.com/gke-tpu-accelerator: tpu-v5-lite-podslice
+        #cloud.google.com/gke-spot: "true"
+      volumes:
+       - name: dshm
+         emptyDir:
+              medium: Memory
+      containers:
+      - name: tgi-tpu-server
+        securityContext:
+            privileged: true
+        image: huggingface/optimum-tpu:latest
+        env:
+            - name: HUGGING_FACE_HUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: huggingface
+                  key: HF_TOKEN
+            - name: shm-size
+              value: 1g
+            - name: model-id
+              value: google/gemma-2b
+            - name: max-concurrent-requests 
+              value: 4
+            - name: max-input-length
+              value: 32
+            - name: max-total-tokens
+              value: 64
+            - name: max-batch-size
+              value: 1
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            google.com/tpu: 1  # TPU chip request
+          limits:
+            google.com/tpu: 1  # TPU chip request
+        volumeMounts:
+            - mountPath: /dev/shm
+              name: dshm
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tgi-tpu-server
+  labels:
+    app: tgi-tpu-server
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: http-tgi-tpu-server
+      protocol: TCP
+  selector:
+    app: tgi-tpu-server
+
+
+             
