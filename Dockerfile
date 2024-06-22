@@ -2,7 +2,7 @@
 FROM alpine AS tgi
 ARG TGI_VERSION ?=5bc3d65dd32ba1f979540caeccbf3dd8798dd9df
 ARG VERSION=0.1.0a1
-RUN test -n ${TGI_VERSION:?}
+#RUN test -n ${TGI_VERSION:?}
 RUN mkdir -p /tgi
 ADD https://github.com/huggingface/text-generation-inference/archive/${TGI_VERSION}.tar.gz /tgi/sources.tar.gz
 RUN tar -C /tgi -xf /tgi/sources.tar.gz --strip-components=1
