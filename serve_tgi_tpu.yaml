@@ -12,8 +12,8 @@ spec:
       labels:
         app: tgi-tpu-server
     spec:
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
+      #hostNetwork: true
+      #dnsPolicy: ClusterFirstWithHostNet
       nodeSelector:
         cloud.google.com/gke-tpu-topology: 1x1 #  target topology
         cloud.google.com/gke-tpu-accelerator: tpu-v5-lite-podslice
@@ -66,8 +66,8 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 8000
-      targetPort: 8000
+    - port: 8080
+      targetPort: 8080
       name: http-tgi-tpu-server
       protocol: TCP
   selector:
