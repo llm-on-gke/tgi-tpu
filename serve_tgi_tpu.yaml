@@ -5,12 +5,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: tgi-tpu-server
+      app: tgi-tpu-inference-server
   replicas: 1  # number of nodes in node-pool
   template:
     metadata:
       labels:
-        app: tgi-tpu-server
+        app: tgi-tpu-inference-server
     spec:
       #hostNetwork: true
       #dnsPolicy: ClusterFirstWithHostNet
@@ -47,8 +47,10 @@ spec:
               value: "64"
             - name: TGI_MAX_BATCH_SIZE
               value: "1"
+            - name: PORT
+              value: "8000"
         ports:
-        - containerPort: 8080
+        - containerPort: 8000
         resources:
           requests:
             google.com/tpu: 1  # TPU chip request
@@ -72,12 +74,12 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 8080
-      targetPort: 8080
+    - port: 8000
+      targetPort: 8000
       name: tgi-inference-server
     
   selector:
-    app: tgi-tpu-server
+    app: tgi-tpu-inference-server
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -97,5 +99,5 @@ spec:
           service:
             name: tgi-tpu-inference-server
             port:
-              number: 8080
+              number: 8000
              
