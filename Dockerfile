@@ -57,7 +57,7 @@ RUN apt-get update -y \
 RUN pip3 --no-cache-dir install --upgrade pip
 
 # VERSION is a mandatory parameter
-ARG VERSION
+ARG VERSION=${VERSION}
 #RUN test -n ${VERSION:?}
 
 # Python server build image
