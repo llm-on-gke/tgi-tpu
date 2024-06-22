@@ -72,7 +72,7 @@ RUN apt-get update -y \
 
 RUN install -d /pyserver
 WORKDIR /pyserver
-COPY text-generation-inference/server server
+COPY server server
 COPY --from=tgi /tgi/proto proto
 RUN pip3 install -r server/build-requirements.txt
 RUN VERBOSE=1 BUILDDIR=/pyserver/build PROTODIR=/pyserver/proto VERSION=${VERSION} make -C server gen-server
@@ -124,7 +124,7 @@ RUN pip install dist/text_generation_server*.tar.gz
 # TPU compatible image for Inference Endpoints
 FROM tpu_base as inference-endpoint
 
-COPY text-generation-inference/docker/entrypoint.sh entrypoint.sh
+COPY entrypoint.sh entrypoint.sh
 RUN chmod +x entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
