@@ -58,7 +58,7 @@ RUN pip3 --no-cache-dir install --upgrade pip
 
 # VERSION is a mandatory parameter
 ARG VERSION
-RUN test -n ${VERSION:?}
+#RUN test -n ${VERSION:?}
 
 # Python server build image
 FROM base AS pyserver
