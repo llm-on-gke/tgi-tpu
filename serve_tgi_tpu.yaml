@@ -35,15 +35,15 @@ spec:
                   key: HF_TOKEN
             - name: shm-size
               value: 1g
-            - name: model-id
+            - name: MODEL_ID
               value: google/gemma-2b
-            - name: max-concurrent-requests 
+            - name: TGI_MAX_CONCURRENT_REQUESTS 
               value: "4"
-            - name: max-input-length
+            - name: TGI_MAX_INPUT_TOKENS
               value: "32"
-            - name: max-total-tokens
+            - name: TGI_MAX_TOTAL_TOKENS
               value: "64"
-            - name: max-batch-size
+            - name: TGI_MAX_BATCH_SIZE
               value: "1"
         ports:
         - containerPort: 8000
