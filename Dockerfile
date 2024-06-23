@@ -128,6 +128,8 @@ FROM tpu_base as inference-endpoint
 COPY entrypoint.sh entrypoint.sh
 RUN chmod +x entrypoint.sh
 
+RUN python3 -m pip install optimum-tpu -f https://storage.googleapis.com/libtpu-releases/index.html
+ENV PJRT_DEVICE=TPU
 ENTRYPOINT ["./entrypoint.sh"]
 
 # TPU compatible image
