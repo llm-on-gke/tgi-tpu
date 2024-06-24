@@ -33,6 +33,8 @@ else
 fi
 
 TGI_MAX_BATCH_PREFILL_TOKENS=$(( TGI_MAX_BATCH_SIZE*TGI_MAX_INPUT_TOKENS ))
+python3 -m pip install optimum-tpu -f https://storage.googleapis.com/libtpu-releases/index.html
+export PJRT_DEVICE=TPU
 
 text-generation-launcher --port 8080 \
   --max-concurrent-requests ${TGI_MAX_CONCURRENT_REQUESTS} \
