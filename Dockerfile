@@ -121,15 +121,12 @@ COPY --from=builder /usr/src/target/release/text-generation-launcher /usr/local/
 COPY --from=pyserver /pyserver/build/dist dist
 RUN pip install dist/text_generation_server*.tar.gz
 
-
 # TPU compatible image for Inference Endpoints
 FROM tpu_base as inference-endpoint
 
 COPY entrypoint.sh entrypoint.sh
 RUN chmod +x entrypoint.sh
 
-RUN python3 -m pip install optimum-tpu -f https://storage.googleapis.com/libtpu-releases/index.html
-ENV PJRT_DEVICE=TPU
 ENTRYPOINT ["./entrypoint.sh"]
 
 # TPU compatible image
