@@ -29,6 +29,12 @@ spec:
         securityContext:
             privileged: true
         image: us-east1-docker.pkg.dev/$PROJECT_ID/gke-llm/optimum-tgi-tpu:latest
+        command: ["/bin/sh", "-c"]
+        args:
+            - |
+              set -ex
+              python3 -m pip install optimum-tpu -f https://storage.googleapis.com/libtpu-releases/index.html
+              text-generation-launcher
         env:
             - name: HF_TOKEN #HUGGING_FACE_HUB_TOKEN
               valueFrom:
