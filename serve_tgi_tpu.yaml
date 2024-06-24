@@ -49,6 +49,8 @@ spec:
               value: "1"
             - name: PORT
               value: "8000"
+            - name: PJRT_DEVICE
+              value: TPU
         ports:
         - containerPort: 8000
         resources:
