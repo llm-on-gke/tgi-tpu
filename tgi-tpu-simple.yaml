@@ -12,10 +12,10 @@ spec:
       labels:
         app: tgi-tpu
     spec:
-      tolerations:
-      - key: "tpu"
-        operator: "Exists"
-        effect: "NoSchedule"
+      #tolerations:
+      #- key: "tpu"
+      #  operator: "Exists"
+      #  effect: "NoSchedule"
         
       nodeSelector:
         cloud.google.com/gke-tpu-topology: 2x2
