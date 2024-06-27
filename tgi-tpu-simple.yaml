@@ -12,6 +12,11 @@ spec:
       labels:
         app: tgi-tpu
     spec:
+      tolerations:
+      - key: "tpu"
+        operator: "Exists"
+        effect: "NoSchedule"
+        
       nodeSelector:
         cloud.google.com/gke-tpu-topology: 2x2
         cloud.google.com/gke-tpu-accelerator: tpu-v5-lite-podslice
@@ -22,7 +27,7 @@ spec:
           emptyDir: {}
       containers:
       - name: tgi-tpu
-        image: huggingface/optimum-tpu:latest #huggingface/optimum-tpu:v0.1.1-tgi
+        image: huggingface/optimum-tpu:v0.1.1-tgi #huggingface/optimum-tpu:latest 
         args:
         - --model-id=meta-llama/Llama-2-7b-hf #google/gemma-2b
         - --max-concurrent-requests=4
