@@ -43,7 +43,7 @@ spec:
                   name: huggingface
                   key: HF_TOKEN
         ports:
-        - containerPort: 80
+        - containerPort: 8000
         volumeMounts:
             - name: data-volume
               mountPath: /data
@@ -64,4 +64,4 @@ spec:
     - name: http
       protocol: TCP
       port: 8080  
-      targetPort: 80
+      targetPort: 8000
