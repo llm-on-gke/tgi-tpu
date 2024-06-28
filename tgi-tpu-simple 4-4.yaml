@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tgi-tpu
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tgi-tpu
+  template:
+    metadata:
+      labels:
+        app: tgi-tpu
+    spec:
+      #tolerations:
+      #- key: "tpu"
+      #  operator: "Exists"
+      #  effect: "NoSchedule"
+        
+      nodeSelector:
+        cloud.google.com/gke-tpu-topology: 4x4
+        cloud.google.com/gke-tpu-accelerator: tpu-v5-lite-podslice
+        cloud.google.com/gke-spot: "true"
+      hostNetwork: true
+      volumes:
+        - name: data-volume
+          emptyDir: {}
+      containers:
+      - name: tgi-tpu
+        image: huggingface/optimum-tpu:v0.1.1-tgi #huggingface/optimum-tpu:latest 
+        args:
+        - --model-id=meta-llama/Llama-2-7b-hf #google/gemma-2b
+        - --max-concurrent-requests=4
+        - --max-input-length=32
+        - --max-total-tokens=64
+        - --max-batch-size=1
+        securityContext:
+            privileged: true
+        env:
+          - name: HF_TOKEN
+            valueFrom:
+                secretKeyRef:
+                  name: huggingface
+                  key: HF_TOKEN
+          - name: HUGGING_FACE_HUB_TOKEN
+            valueFrom:
+                secretKeyRef:
+                  name: huggingface
+                  key: HF_TOKEN
+        ports:
+        - containerPort: 80
+        volumeMounts:
+            - name: data-volume
+              mountPath: /data
+        resources:
+          requests:
+            google.com/tpu: 4
+          limits:
+            google.com/tpu: 4
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service
+spec:
+  selector:
+    app: tgi-tpu
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080  
+      targetPort: 80
