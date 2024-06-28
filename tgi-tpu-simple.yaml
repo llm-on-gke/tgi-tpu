@@ -18,7 +18,7 @@ spec:
       #  effect: "NoSchedule"
         
       nodeSelector:
-        cloud.google.com/gke-tpu-topology: 2x2
+        cloud.google.com/gke-tpu-topology: 2x4
         cloud.google.com/gke-tpu-accelerator: tpu-v5-lite-podslice
         cloud.google.com/gke-spot: "true"
       hostNetwork: true
@@ -54,9 +54,9 @@ spec:
               mountPath: /data
         resources:
           requests:
-            google.com/tpu: 4
+            google.com/tpu: 8
           limits:
-            google.com/tpu: 4
+            google.com/tpu: 8
 ---
 apiVersion: v1
 kind: Service
